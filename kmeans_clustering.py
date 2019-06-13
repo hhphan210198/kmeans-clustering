@@ -4,17 +4,20 @@ from sklearn.datasets.samples_generator import make_blobs
 from scipy.spatial.distance import cdist
 
 
+# generate random data points
 def generate_random_numbers(num_count=1000, num_cluster=3):
     x, y = make_blobs(n_samples=num_count, n_features=2, centers=num_cluster)
     return x, y
 
 
+# traditional initialization
 def initialize_centroids(data, num_cluster):
     perm = np.random.permutation(data)
     centroids = perm[:num_cluster, :]
     return centroids
 
 
+# k-means++ initialization
 def initialize_centroids_kmpp(data, num_cluster):
     centroids = np.zeros((num_cluster, data.shape[1]))
     first_centroid_idx = np.random.randint(data.shape[0])
@@ -36,6 +39,7 @@ def initialize_centroids_kmpp(data, num_cluster):
     return centroids
 
 
+# assign data points to their closest centroids
 def assign_to_closest_centroids(data, centroid_list):
     m, n = data.shape               # number of data points, 2
     k = centroid_list.shape[0]      # number of centroids
@@ -50,6 +54,7 @@ def assign_to_closest_centroids(data, centroid_list):
     return centroid_assignment
 
 
+# compute new centroids based on the new assignment
 def compute_centroids(data, centroid_assignment, num_cluster):
     m, n = data.shape
     sparse_mat = np.zeros((m, num_cluster))
@@ -60,6 +65,7 @@ def compute_centroids(data, centroid_assignment, num_cluster):
     return new_centroid_list
 
 
+# compute total cost as sum of euclidean distances between data points and their centroids
 def compute_cost(data, centroid_assignment, centroid_list):
     m, n = data.shape
     total_cost = 0

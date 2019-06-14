@@ -5,8 +5,8 @@ from scipy.spatial.distance import cdist
 
 
 # generate random data points
-def generate_random_numbers(num_count=1000, num_cluster=3):
-    x, y = make_blobs(n_samples=num_count, n_features=2, centers=num_cluster)
+def generate_random_numbers(num_count=1000, num_cluster=3, seed=None):
+    x, y = make_blobs(n_samples=num_count, n_features=2, centers=num_cluster, random_state=seed)
     return x, y
 
 
@@ -113,10 +113,11 @@ def run_k_mean(data, num_cluster=3, tol=1e-7, kmpp=False):
     # Show final assignment
     plt.scatter(data[:, 0], data[:, 1], c=labels)
     plt.scatter(centroids[:, 0], centroids[:, 1], c='r')
-    plt.title("Final assignment with %d clusters" % num_cluster)
     if kmpp:
+        plt.title("Final assignment with %d clusters (K-means++)" % num_cluster)
         plt.savefig("Plot/Final_kmpp")
     else:
+        plt.title("Final assignment with %d clusters (Vanilla K-means)" % num_cluster)
         plt.savefig("Plot/Final_vanilla")
     plt.show()
 
@@ -127,14 +128,17 @@ if __name__ == "__main__":
     data, _ = generate_random_numbers(num_cluster=5)
     # Plot of cost vs. iterations
     cost_history = run_k_mean(data, num_cluster=5)
+    min_cost = cost_history[len(cost_history) - 1]
     cost_history_pp = run_k_mean(data, num_cluster=5, kmpp=True)
+    min_cost_pp = cost_history_pp[len(cost_history_pp) - 1]
     fig, ax = plt.subplots(1, 2)
     ax[0].plot(cost_history)
-    ax[0].set_title("Vanilla")
+    ax[0].set_title("Vanilla K-means \n Lowest cost: %f" % min_cost)
     ax[0].set_xlabel("Number of iterations")
     ax[0].set_ylabel("Total cost")
     ax[1].plot(cost_history)
-    ax[1].set_title("K-means++")
+    ax[1].set_title("K-means++ \n Lowest cost: %f" % min_cost_pp)
     ax[1].set_xlabel("Number of iterations")
     ax[1].set_ylabel("Total cost")
+    plt.savefig("Plot/Cost")
     plt.show()

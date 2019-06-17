@@ -11,4 +11,4 @@ Final clusters assignment:
 One disadvantage of the vanilla K-means algorithm is that it can get stuck at local minima due to poor initialization. 
 To address this issue, I have also included an implementation K-means++, which offers better initial centroids and helps
 reduce the issue of local minima. Note that K-means++ does not guarantee the optimal assignment, and multiple runs are needed 
-to obtain the optimal one. 
+to obtain the optimal result. 

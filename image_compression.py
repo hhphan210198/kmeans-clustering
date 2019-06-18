@@ -15,10 +15,7 @@ def compress_image(image, num_cluster):
     return output
 
 
-im = np.array(Image.open('house.jpg'))
-out = compress_image(im, 10)
-plt.imshow(out)
-plt.show()
-
-
-
+# im = np.array(Image.open('house.jpg'))
+# out = compress_image(im, 10)
+# plt.imshow(out)
+# plt.show()
